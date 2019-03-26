@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lixxy.depositplan.dao.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.lixxy.depositplan.model.UserBean" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="plan_id" property="planId" jdbcType="INTEGER" />
+    <result column="nike_name" property="nikeName" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="verification_code" property="verificationCode" jdbcType="VARCHAR" />
+    <result column="creata_date" property="creataDate" jdbcType="TIMESTAMP" />
+    <result column="is_del" property="isDel" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, plan_id, nike_name, phone, password, verification_code, creata_date, is_del
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.lixxy.depositplan.model.UserBean" >
+    insert into user (id, plan_id, nike_name, 
+      phone, password, verification_code, 
+      creata_date, is_del)
+    values (#{id,jdbcType=INTEGER}, #{planId,jdbcType=INTEGER}, #{nikeName,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{verificationCode,jdbcType=VARCHAR}, 
+      #{creataDate,jdbcType=TIMESTAMP}, #{isDel,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lixxy.depositplan.model.UserBean" >
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="planId != null" >
+        plan_id,
+      </if>
+      <if test="nikeName != null" >
+        nike_name,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="verificationCode != null" >
+        verification_code,
+      </if>
+      <if test="creataDate != null" >
+        creata_date,
+      </if>
+      <if test="isDel != null" >
+        is_del,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="planId != null" >
+        #{planId,jdbcType=INTEGER},
+      </if>
+      <if test="nikeName != null" >
+        #{nikeName,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="verificationCode != null" >
+        #{verificationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="creataDate != null" >
+        #{creataDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDel != null" >
+        #{isDel,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lixxy.depositplan.model.UserBean" >
+    update user
+    <set >
+      <if test="planId != null" >
+        plan_id = #{planId,jdbcType=INTEGER},
+      </if>
+      <if test="nikeName != null" >
+        nike_name = #{nikeName,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="verificationCode != null" >
+        verification_code = #{verificationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="creataDate != null" >
+        creata_date = #{creataDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDel != null" >
+        is_del = #{isDel,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lixxy.depositplan.model.UserBean" >
+    update user
+    set plan_id = #{planId,jdbcType=INTEGER},
+      nike_name = #{nikeName,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      verification_code = #{verificationCode,jdbcType=VARCHAR},
+      creata_date = #{creataDate,jdbcType=TIMESTAMP},
+      is_del = #{isDel,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

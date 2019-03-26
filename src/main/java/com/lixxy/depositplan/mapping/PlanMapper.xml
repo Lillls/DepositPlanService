@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lixxy.depositplan.dao.PlanMapper" >
+  <resultMap id="BaseResultMap" type="com.lixxy.depositplan.model.PlanBean" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="money" property="money" jdbcType="BIGINT" />
+    <result column="daily_money" property="dailyMoney" jdbcType="BIGINT" />
+    <result column="start_money" property="startMoney" jdbcType="BIGINT" />
+    <result column="increase_money" property="increaseMoney" jdbcType="BIGINT" />
+    <result column="is_del" property="isDel" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, type, name, money, daily_money,start_money, increase_money, is_del, create_date,
+    end_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from plan
+    where id = #{id,jdbcType=INTEGER}
+    AND is_del = 0
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from plan
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.lixxy.depositplan.model.PlanBean" >
+    insert into plan (id, user_id, type, 
+      name, money, daily_money, start_money,
+      increase_money, is_del, create_date, 
+      end_date)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
+      #{name,jdbcType=VARCHAR}, #{money,jdbcType=BIGINT}, #{dailyMoney,jdbcType=BIGINT}, 
+      #{startMoney,jdbcType=BIGINT},,#{increaseMoney,jdbcType=BIGINT}, #{isDel,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
+      #{endDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lixxy.depositplan.model.PlanBean" >
+    insert into plan
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="dailyMoney != null" >
+        daily_money,
+      </if>
+      <if test="startMoney != null" >
+        start_money,
+      </if>
+      <if test="increaseMoney != null" >
+        increase_money,
+      </if>
+      <if test="isDel != null" >
+        is_del,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="endDate != null" >
+        end_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=BIGINT},
+      </if>
+      <if test="dailyMoney != null" >
+        #{dailyMoney,jdbcType=BIGINT},
+      </if>
+      <if test="startMoney != null" >
+        #{startMoney,jdbcType=BIGINT},
+      </if>
+      <if test="increaseMoney != null" >
+        #{increaseMoney,jdbcType=BIGINT},
+      </if>
+      <if test="isDel != null" >
+        #{isDel,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null" >
+        #{endDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lixxy.depositplan.model.PlanBean" >
+    update plan
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=BIGINT},
+      </if>
+      <if test="dailyMoney != null" >
+        daily_money = #{dailyMoney,jdbcType=BIGINT},
+      </if>
+      <if test="dailyMoney != null" >
+        start_money = #{startMoney,jdbcType=BIGINT},
+      </if>
+      <if test="increaseMoney != null" >
+        increase_money = #{increaseMoney,jdbcType=BIGINT},
+      </if>
+      <if test="isDel != null" >
+        is_del = #{isDel,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null" >
+        end_date = #{endDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lixxy.depositplan.model.PlanBean" >
+    update plan
+    set user_id = #{userId,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      money = #{money,jdbcType=BIGINT},
+      daily_money = #{dailyMoney,jdbcType=BIGINT},
+      start_money = #{startMoney,jdbcType=BIGINT},
+      increase_money = #{increaseMoney,jdbcType=BIGINT},
+      is_del = #{isDel,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      end_date = #{endDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from plan
+    where user_id = #{userId,jdbcType=INTEGER}
+    AND is_del = 0
+  </select>
+</mapper>
