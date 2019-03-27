@@ -10,12 +10,13 @@
     <result column="daily_money" property="dailyMoney" jdbcType="BIGINT" />
     <result column="start_money" property="startMoney" jdbcType="BIGINT" />
     <result column="increase_money" property="increaseMoney" jdbcType="BIGINT" />
-    <result column="is_del" property="isDel" jdbcType="VARCHAR" />
+    <result column="is_del" property="isDel" jdbcType="INTEGER" />
+    <result column="is_complete" property="isComplete" jdbcType="INTEGER" />
     <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
     <result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, user_id, type, name, money, daily_money,start_money, increase_money, is_del, create_date,
+    id, user_id, type, name, money, daily_money,start_money, increase_money, is_del,is_complete, create_date,
     end_date
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -32,11 +33,11 @@
   <insert id="insert" parameterType="com.lixxy.depositplan.model.PlanBean" >
     insert into plan (id, user_id, type, 
       name, money, daily_money, start_money,
-      increase_money, is_del, create_date, 
+      increase_money, is_del,is_complete, create_date,
       end_date)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
       #{name,jdbcType=VARCHAR}, #{money,jdbcType=BIGINT}, #{dailyMoney,jdbcType=BIGINT}, 
-      #{startMoney,jdbcType=BIGINT},,#{increaseMoney,jdbcType=BIGINT}, #{isDel,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
+      #{startMoney,jdbcType=BIGINT},,#{increaseMoney,jdbcType=BIGINT}, #{isDel,jdbcType=INTEGER}, #{isComplete,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP},
       #{endDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.lixxy.depositplan.model.PlanBean" >
@@ -68,6 +69,9 @@
       </if>
       <if test="isDel != null" >
         is_del,
+      </if>
+      <if test="isComplete != null" >
+        is_complete,
       </if>
       <if test="createDate != null" >
         create_date,
@@ -102,7 +106,10 @@
         #{increaseMoney,jdbcType=BIGINT},
       </if>
       <if test="isDel != null" >
-        #{isDel,jdbcType=VARCHAR},
+        #{isDel,jdbcType=INTEGER},
+      </if>
+      <if test="isComplete != null" >
+        #{isComplete,jdbcType=INTEGER},
       </if>
       <if test="createDate != null" >
         #{createDate,jdbcType=TIMESTAMP},
@@ -137,7 +144,10 @@
         increase_money = #{increaseMoney,jdbcType=BIGINT},
       </if>
       <if test="isDel != null" >
-        is_del = #{isDel,jdbcType=VARCHAR},
+        is_del = #{isDel,jdbcType=INTEGER},
+      </if>
+      <if test="isComplete != null" >
+        is_complete = #{isDel,jdbcType=INTEGER},
       </if>
       <if test="createDate != null" >
         create_date = #{createDate,jdbcType=TIMESTAMP},
@@ -157,7 +167,8 @@
       daily_money = #{dailyMoney,jdbcType=BIGINT},
       start_money = #{startMoney,jdbcType=BIGINT},
       increase_money = #{increaseMoney,jdbcType=BIGINT},
-      is_del = #{isDel,jdbcType=VARCHAR},
+      is_del = #{isDel,jdbcType=INTEGER},
+      is_complete = #{isComplete,jdbcType=INTEGER},
       create_date = #{createDate,jdbcType=TIMESTAMP},
       end_date = #{endDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

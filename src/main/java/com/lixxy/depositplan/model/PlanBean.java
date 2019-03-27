@@ -21,12 +21,12 @@ public class PlanBean {
     private Long money;
 
     private Long dailyMoney;
-
     private Long startMoney;
 
     private Long increaseMoney;
 
-    private String isDel;
+    private Integer isDel;
+    private Integer isComplete;
 
     private Date createDate;
 
@@ -96,13 +96,14 @@ public class PlanBean {
         this.increaseMoney = increaseMoney;
     }
 
-    public String getIsDel() {
+    public Integer getIsDel() {
         return isDel;
     }
 
-    public void setIsDel(String isDel) {
-        this.isDel = isDel == null ? null : isDel.trim();
+    public void setIsDel(Integer isDel) {
+        this.isDel = isDel;
     }
+
 
     public Date getCreateDate() {
         return createDate;
@@ -118,5 +119,13 @@ public class PlanBean {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public Integer getIsComplete() {
+        return isComplete;
+    }
+
+    public void setIsComplete(Integer isComplete) {
+        this.isComplete = isComplete;
     }
 }
