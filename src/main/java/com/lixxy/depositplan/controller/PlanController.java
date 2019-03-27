@@ -1,9 +1,9 @@
 package com.lixxy.depositplan.controller;
 
-import com.lixxy.depositplan.dao.PlanMapper;
 import com.lixxy.depositplan.model.PlanBean;
 import com.lixxy.depositplan.model.PlanDetailBean;
-import com.lixxy.depositplan.service.SavedRecoedService;
+import com.lixxy.depositplan.service.PlanService;
+import com.lixxy.depositplan.service.SavedRecordService;
 import com.lixxy.depositplan.utils.DateUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -25,12 +24,9 @@ import java.util.Map;
 public class PlanController {
 
     @Autowired
-    PlanMapper planDao;
-
+    PlanService planService;
     @Autowired
-    SavedRecoedService savedRecoedService;
-
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
+    SavedRecordService recordService;
 
     @RequestMapping(value = "/uploadData")
     public @ResponseBody
@@ -39,7 +35,7 @@ public class PlanController {
         List<PlanBean> planBeanList = requestMap.get("list");
         int count = 0;
         for (PlanBean planBean : planBeanList) {
-            planDao.insert(planBean);
+            planService.insertSelective(planBean);
             planBean.setUserId(999);
             count++;
         }
@@ -54,11 +50,11 @@ public class PlanController {
     Map getPlanById(@RequestBody Map<String, Integer> requestMap) {
         Map<String, Object> map = new HashMap<>();
         Integer planId = requestMap.get("planId");
-        PlanBean planBean = planDao.selectByPrimaryKey(planId);
+        PlanBean planBean = planService.selectByPrimaryKey(planId);
 
         map.put("code", 100);
         map.put("msg", "success");
-        map.put("data",planBean);
+        map.put("data", planBean);
         return map;
     }
 
@@ -67,10 +63,10 @@ public class PlanController {
     Map getPlanByUserId(@RequestBody Map<String, Integer> requestMap) {
         Map<String, Object> map = new HashMap<>();
         Integer userId = requestMap.get("userId");
-        List<PlanBean> planBeans = planDao.selectByUserId(userId);
+        List<PlanBean> planBeans = planService.selectByUserId(userId);
         map.put("code", 100);
         map.put("msg", "success");
-        map.put("data",planBeans);
+        map.put("data", planBeans);
         return map;
     }
 
@@ -80,19 +76,19 @@ public class PlanController {
         Map<String, Object> map = new HashMap<>();
         PlanDetailBean detailBean = new PlanDetailBean();
         Integer planId = requestMap.get("planId");
-        PlanBean planBean = planDao.selectByPrimaryKey(planId);
-        Double savedMoney = savedRecoedService.getSavedMoney(planId);
+        PlanBean planBean = planService.selectByPrimaryKey(planId);
+        Double savedMoney = recordService.getSavedMoney(planId);
 
         detailBean.setId(planId);
         detailBean.setName(planBean.getName());
-        detailBean.setPassDays(DateUtils.getDistanceOfTwoDate(planBean.getCreateDate(),new Date())+1);
-        detailBean.setTotalDays(DateUtils.getDistanceOfTwoDate(planBean.getCreateDate(),planBean.getEndDate())+1);
-        detailBean.setTotalMoney(planBean.getMoney()/100.0);
+        detailBean.setPassDays(DateUtils.getDistanceOfTwoDate(planBean.getCreateDate(), new Date()) + 1);
+        detailBean.setTotalDays(DateUtils.getDistanceOfTwoDate(planBean.getCreateDate(), planBean.getEndDate()) + 1);
+        detailBean.setTotalMoney(planBean.getMoney() / 100.0);
         detailBean.setSavedMoney(savedMoney);
 
         map.put("code", 100);
         map.put("msg", "success");
-        map.put("data",detailBean);
+        map.put("data", detailBean);
         return map;
     }
 

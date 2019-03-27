@@ -30,7 +30,6 @@ public interface SaveRecordMapper {
 
     SaveRecordBean selectTodayRecordByPlanId(@Param("planId") Integer planId);
 
-
     Integer getLastInsertId();
 
     int saveMoney(Integer id);

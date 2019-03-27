@@ -9,18 +9,18 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class SavedRecoedService {
+public class SavedRecordService {
+
     @Autowired
-    SaveRecordMapper saveRecordDao;
+    SaveRecordMapper recordMapper;
 
 
     /**
-     *
-     * @param planId planId
+     * @param planId  planId
      * @param isSaved 0是未存 1是存了 -1是不限制
      */
     public List<SaveRecordBean> getSaveRecords(int planId, int isSaved) {
-        return saveRecordDao.selectSaveRecords(planId, isSaved);
+        return recordMapper.selectSaveRecords(planId, isSaved);
     }
 
     public Double getSavedMoney(int planId) {
@@ -33,7 +33,19 @@ public class SavedRecoedService {
     }
 
     //存钱
-    public Integer saveMoney(int id){
-      return  saveRecordDao.saveMoney(id);
+    public Integer saveMoney(int id) {
+        return recordMapper.saveMoney(id);
+    }
+
+    public int insertSelective(SaveRecordBean record) {
+        return recordMapper.insertSelective(record);
+    }
+
+    public SaveRecordBean selectTodayRecordByPlanId(Integer planId) {
+        return recordMapper.selectTodayRecordByPlanId(planId);
+    }
+
+    public Integer getLastInsertId() {
+        return recordMapper.getLastInsertId();
     }
 }
