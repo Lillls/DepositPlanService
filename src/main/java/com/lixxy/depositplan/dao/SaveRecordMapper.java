@@ -24,14 +24,15 @@ public interface SaveRecordMapper {
 
     int updateByPrimaryKey(SaveRecordBean record);
 
-    List<SaveRecordBean> selectSaveRecordByUserIdAndPlanId(@Param("userId") Integer userId
-            , @Param("planId") Integer planId);
 
-    List<SaveRecordBean> selectSavedByPlanId(@Param("planId") Integer planId);
+    List<SaveRecordBean> selectSaveRecords(@Param("planId") Integer planId
+            , @Param("isSaved") Integer isSaved);
 
     SaveRecordBean selectTodayRecordByPlanId(@Param("planId") Integer planId);
 
 
     Integer getLastInsertId();
+
+    int saveMoney(Integer id);
 
 }

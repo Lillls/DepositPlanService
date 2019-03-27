@@ -5,6 +5,7 @@ import com.lixxy.depositplan.dao.SaveRecordMapper;
 import com.lixxy.depositplan.model.PlanBean;
 import com.lixxy.depositplan.model.SaveRecordBean;
 import com.lixxy.depositplan.model.UserIdAndPlaId;
+import com.lixxy.depositplan.service.SavedRecoedService;
 import com.lixxy.depositplan.utils.DateUtils;
 import com.lixxy.depositplan.utils.GenerateUtils;
 
@@ -31,6 +32,9 @@ public class SavedRecordController {
     @Autowired
     PlanMapper planDao;
 
+    @Autowired
+    SavedRecoedService savedRecoedService;
+
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
 
     @RequestMapping(value = "/uploadData")
@@ -53,17 +57,31 @@ public class SavedRecordController {
 
     @RequestMapping(value = "/getSavedMoneyByPlanId")
     public @ResponseBody
-    Map getSavedMoneyByPlanId(@RequestBody UserIdAndPlaId bean) {
+    Map getSavedMoneyByPlanId(@RequestBody Map<String, Integer> requestMap) {
         Map<String, Object> map = new HashMap<>();
-        List<SaveRecordBean> saveRecordBeans =
-                saveRecordDao.selectSaveRecordByUserIdAndPlanId(bean.getUserId(), bean.getPlanId());
-        int total = 0;
-        for (SaveRecordBean saveRecordBean : saveRecordBeans) {
-            total += saveRecordBean.getMoney();
-        }
+        Integer planId = requestMap.get("planId");
+        Double saveRecord = savedRecoedService.getSavedMoney(planId);
         map.put("code", 100);
         map.put("msg", "success");
-        map.put("data", total / 100);
+        map.put("data", saveRecord);
+        return map;
+    }
+
+    @RequestMapping(value = "/saveMoney")
+    public @ResponseBody
+    Map saveMoney(@RequestBody Map<String, Integer> requestMap) {
+        Map<String, Object> map = new HashMap<>();
+        Integer id = requestMap.get("id");
+
+        Integer integer = savedRecoedService.saveMoney(id);
+        if (integer>0){
+            map.put("code", 100);
+            map.put("msg", "success");
+        }else {
+            map.put("code", -100);
+            map.put("msg", "failure");
+        }
+
         return map;
     }
 
@@ -71,7 +89,6 @@ public class SavedRecordController {
     public @ResponseBody
     Map getTodayMoney(@RequestBody UserIdAndPlaId bean) {
         Map<String, Object> map = new HashMap<>();
-        int userId = bean.getUserId();
         int planId = bean.getPlanId();
         PlanBean planBean = planDao.selectByPrimaryKey(planId);
         SaveRecordBean recordBean = null;
@@ -86,7 +103,7 @@ public class SavedRecordController {
 
                 break;
             case 5:
-                recordBean = getTodayRecord5(userId, planId, planBean);
+                recordBean = getTodayRecord5(planId, planBean);
                 break;
             default:
                 break;
@@ -101,12 +118,17 @@ public class SavedRecordController {
         return map;
     }
 
-    private SaveRecordBean getTodayRecord5(int userId, int planId, PlanBean planBean) {
+    /**
+     * @param planId   planId
+     * @param planBean 计划bean
+     * @return 记录
+     */
+    private SaveRecordBean getTodayRecord5(int planId, PlanBean planBean) {
         //查询今天是否有记录
-        SaveRecordBean recordBean = saveRecordDao.selectTodayRecordByPlanId(userId);
+        SaveRecordBean recordBean = saveRecordDao.selectTodayRecordByPlanId(planId);
         if (recordBean == null) {
             List<SaveRecordBean> saveRecordBeans =
-                    saveRecordDao.selectSaveRecordByUserIdAndPlanId(userId, planId);
+                    savedRecoedService.getSaveRecords(planId, -1);
             int totalDays = DateUtils.getDistanceOfTwoDate(planBean.getCreateDate(), planBean.getEndDate());
             List<Long> list = GenerateUtils.generateList(planBean.getStartMoney(), planBean.getIncreaseMoney(), totalDays);
 
@@ -118,7 +140,6 @@ public class SavedRecordController {
 
             recordBean = new SaveRecordBean();
             recordBean.setPlanId(planId);
-            recordBean.setUserId(userId);
             recordBean.setMoney(list.get(randomInt));
             int i = saveRecordDao.insertSelective(recordBean);
             Integer insertId = saveRecordDao.getLastInsertId();

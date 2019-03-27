@@ -121,27 +121,19 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-    <select id="selectSaveRecordByUserIdAndPlanId" resultMap="BaseResultMap"
-        parameterType="java.util.Map">
+    <select id="selectSaveRecords" resultMap="BaseResultMap" parameterType="java.util.Map">
         select
         <include refid="Base_Column_List" />
         from saved_record
-        where user_id = #{userId,jdbcType=INTEGER}
-        AND plan_id = #{planId,jdbcType=INTEGER}
+        where
+        plan_id = #{planId,jdbcType=INTEGER}
         AND is_del = 0
+        <if test="isSaved != -1">
+            AND is_saved = #{isSaved,jdbcType=INTEGER}
+        </if>
     </select>
 
-    <select id="selectSavedByPlanId" resultMap="BaseResultMap" parameterType="java.util.Map">
-        select
-        <include refid="Base_Column_List" />
-        from saved_record
-        where is_saved = 1
-        AND plan_id = #{planId,jdbcType=INTEGER}
-        AND is_del = 0
-    </select>
-
-    <select id="selectTodayRecordByPlanId" resultMap="BaseResultMap"
-        parameterType="java.util.Map">
+    <select id="selectTodayRecordByPlanId" resultMap="BaseResultMap" parameterType="java.util.Map">
         select
         <include refid="Base_Column_List" />
         from saved_record
@@ -154,5 +146,14 @@
     <select id="getLastInsertId" resultType="java.lang.Integer">
         select LAST_INSERT_ID()
     </select>
+
+    <update id="saveMoney" parameterType="java.lang.Integer">
+        update saved_record
+        <set>
+            is_saved = 1,
+            saved_date = now(),
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 
 </mapper>

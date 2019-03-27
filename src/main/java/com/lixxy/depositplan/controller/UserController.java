@@ -26,8 +26,7 @@ public class UserController {
     @RequestMapping(value = "/test")
     public @ResponseBody
     Map<String, Object> test(@RequestBody Map<String, Object> map) {
-        List<SaveRecordBean> saveRecordBeans = saveRecordDao.selectSaveRecordByUserIdAndPlanId(888, 888);
-        map.put("data", saveRecordBeans);
+        map.put("data", "hello world");
         return map;
     }
 }

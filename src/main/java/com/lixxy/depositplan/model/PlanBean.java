@@ -21,6 +21,7 @@ public class PlanBean {
     private Long money;
 
     private Long dailyMoney;
+
     private Long startMoney;
 
     private Long increaseMoney;

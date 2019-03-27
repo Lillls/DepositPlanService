@@ -2,6 +2,9 @@ package com.lixxy.depositplan.controller;
 
 import com.lixxy.depositplan.dao.PlanMapper;
 import com.lixxy.depositplan.model.PlanBean;
+import com.lixxy.depositplan.model.PlanDetailBean;
+import com.lixxy.depositplan.service.SavedRecoedService;
+import com.lixxy.depositplan.utils.DateUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +26,9 @@ public class PlanController {
 
     @Autowired
     PlanMapper planDao;
+
+    @Autowired
+    SavedRecoedService savedRecoedService;
 
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
 
@@ -42,7 +49,6 @@ public class PlanController {
         return map;
     }
 
-
     @RequestMapping(value = "/getPlanById")
     public @ResponseBody
     Map getPlanById(@RequestBody Map<String, Integer> requestMap) {
@@ -54,7 +60,6 @@ public class PlanController {
         map.put("msg", "success");
         map.put("data",planBean);
         return map;
-
     }
 
     @RequestMapping(value = "/getPlanByUserId")
@@ -68,5 +73,28 @@ public class PlanController {
         map.put("data",planBeans);
         return map;
     }
+
+    @RequestMapping(value = "/getPlanDetail")
+    public @ResponseBody
+    Map getPlanDetail(@RequestBody Map<String, Integer> requestMap) {
+        Map<String, Object> map = new HashMap<>();
+        PlanDetailBean detailBean = new PlanDetailBean();
+        Integer planId = requestMap.get("planId");
+        PlanBean planBean = planDao.selectByPrimaryKey(planId);
+        Double savedMoney = savedRecoedService.getSavedMoney(planId);
+
+        detailBean.setId(planId);
+        detailBean.setName(planBean.getName());
+        detailBean.setPassDays(DateUtils.getDistanceOfTwoDate(planBean.getCreateDate(),new Date())+1);
+        detailBean.setTotalDays(DateUtils.getDistanceOfTwoDate(planBean.getCreateDate(),planBean.getEndDate())+1);
+        detailBean.setTotalMoney(planBean.getMoney()/100.0);
+        detailBean.setSavedMoney(savedMoney);
+
+        map.put("code", 100);
+        map.put("msg", "success");
+        map.put("data",detailBean);
+        return map;
+    }
+
 
 }
