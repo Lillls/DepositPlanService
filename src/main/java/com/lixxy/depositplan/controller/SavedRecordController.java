@@ -142,6 +142,7 @@ public class SavedRecordController {
                 return null;
             }
         }
+        recordBean.setMoney(recordBean.getMoney()/100);
         return recordBean;
     }
 
