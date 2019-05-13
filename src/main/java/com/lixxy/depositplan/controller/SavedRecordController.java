@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,10 +69,10 @@ public class SavedRecordController {
         Integer id = requestMap.get("id");
 
         Integer integer = recordService.saveMoney(id);
-        if (integer>0){
+        if (integer > 0) {
             map.put("code", 100);
             map.put("msg", "success");
-        }else {
+        } else {
             map.put("code", -100);
             map.put("msg", "failure");
         }
@@ -84,6 +85,7 @@ public class SavedRecordController {
     Map getTodayMoney(@RequestBody UserIdAndPlaId bean) {
         Map<String, Object> map = new HashMap<>();
         int planId = bean.getPlanId();
+        Date date = bean.getDate();
         PlanBean planBean = planService.selectByPrimaryKey(planId);
         SaveRecordBean recordBean = null;
         switch (planBean.getType()) {
@@ -97,7 +99,7 @@ public class SavedRecordController {
 
                 break;
             case 5:
-                recordBean = getTodayRecord5(planId, planBean);
+                recordBean = getTodayRecord5(planId, planBean,date);
                 break;
             default:
                 break;
@@ -115,11 +117,15 @@ public class SavedRecordController {
     /**
      * @param planId   planId
      * @param planBean 计划bean
+     * @param date
      * @return 记录
      */
-    private SaveRecordBean getTodayRecord5(int planId, PlanBean planBean) {
+    private SaveRecordBean getTodayRecord5(int planId, PlanBean planBean, Date date) {
+        if (date==null){
+            date = new Date();
+        }
         //查询今天是否有记录
-        SaveRecordBean recordBean = recordService.selectTodayRecordByPlanId(planId);
+        SaveRecordBean recordBean = recordService.selectTodayRecordByPlanId(planId,date);
         if (recordBean == null) {
             List<SaveRecordBean> saveRecordBeans =
                     recordService.getSaveRecords(planId, -1);
@@ -134,7 +140,8 @@ public class SavedRecordController {
 
             recordBean = new SaveRecordBean();
             recordBean.setPlanId(planId);
-            recordBean.setMoney(list.get(randomInt));
+            recordBean.setMoney(list.get(randomInt).doubleValue());
+            recordBean.setCreateDate(date);
             int i = recordService.insertSelective(recordBean);
             Integer insertId = recordService.getLastInsertId();
             recordBean.setId(insertId);
@@ -142,7 +149,7 @@ public class SavedRecordController {
                 return null;
             }
         }
-        recordBean.setMoney(recordBean.getMoney()/100);
+        recordBean.setMoney(recordBean.getMoney() / 100);
         return recordBean;
     }
 

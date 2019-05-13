@@ -11,6 +11,7 @@
     </parent>
     <groupId>com.lixxy.depositplan</groupId>
     <artifactId>demo</artifactId>
+    <packaging>war</packaging>
     <version>0.0.1-SNAPSHOT</version>
     <name>DepositPlan</name>
     <description>小小存钱计划</description>
@@ -23,8 +24,25 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <!--去除spring boot自带的tomcat容器-->
+            <!-- 移除嵌入式tomcat插件 -->
+            <!--<exclusions>-->
+                <!--<exclusion>-->
+                    <!--<groupId>org.springframework.boot</groupId>-->
+                    <!--<artifactId>spring-boot-starter-tomcat</artifactId>-->
+                <!--</exclusion>-->
+            <!--</exclusions>-->
+            <!--去除spring boot自带的tomcat容器-->
+            <!-- 移除嵌入式tomcat插件 -->
         </dependency>
-
+        <!--部署到外部tomcat用-->
+        <!--<dependency>-->
+            <!--<groupId>javax.servlet</groupId>-->
+            <!--<artifactId>javax.servlet-api</artifactId>-->
+            <!--<version>3.1.0</version>-->
+            <!--<scope>provided</scope>-->
+        <!--</dependency>-->
+        <!--部署到外部tomcat用-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -50,6 +68,7 @@
     </dependencies>
 
     <build>
+        <finalName>DepositPlan</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

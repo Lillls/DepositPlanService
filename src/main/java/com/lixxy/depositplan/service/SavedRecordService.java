@@ -6,6 +6,7 @@ import com.lixxy.depositplan.model.SaveRecordBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -25,7 +26,7 @@ public class SavedRecordService {
 
     public Double getSavedMoney(int planId) {
         List<SaveRecordBean> saveRecords = getSaveRecords(planId, 1);
-        Long total = 0L;
+        Double total = 0D;
         for (SaveRecordBean saveRecordBean : saveRecords) {
             total += saveRecordBean.getMoney();
         }
@@ -41,8 +42,8 @@ public class SavedRecordService {
         return recordMapper.insertSelective(record);
     }
 
-    public SaveRecordBean selectTodayRecordByPlanId(Integer planId) {
-        return recordMapper.selectTodayRecordByPlanId(planId);
+    public SaveRecordBean selectTodayRecordByPlanId(Integer planId, Date date) {
+        return recordMapper.selectTodayRecordByPlanId(planId,date);
     }
 
     public Integer getLastInsertId() {

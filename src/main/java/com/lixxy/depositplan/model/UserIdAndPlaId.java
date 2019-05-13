@@ -1,8 +1,14 @@
 package com.lixxy.depositplan.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.util.Date;
+
 public class UserIdAndPlaId {
     private int planId;
     private int UserId;
+
+    private Date date;
 
     public UserIdAndPlaId() {
     }
@@ -26,5 +32,13 @@ public class UserIdAndPlaId {
 
     public void setUserId(int userId) {
         UserId = userId;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

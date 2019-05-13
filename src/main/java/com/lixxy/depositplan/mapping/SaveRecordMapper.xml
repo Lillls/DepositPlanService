@@ -139,7 +139,7 @@
         from saved_record
         where
         plan_id = #{planId,jdbcType=INTEGER}
-        AND to_days(create_date) = to_days(now())
+        AND to_days(create_date) = to_days(#{date,jdbcType=DATE})
         AND is_del = 0
     </select>
 

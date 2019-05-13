@@ -28,7 +28,7 @@ public interface SaveRecordMapper {
     List<SaveRecordBean> selectSaveRecords(@Param("planId") Integer planId
             , @Param("isSaved") Integer isSaved);
 
-    SaveRecordBean selectTodayRecordByPlanId(@Param("planId") Integer planId);
+    SaveRecordBean selectTodayRecordByPlanId(@Param("planId") Integer planId,@Param("date") Date date);
 
     Integer getLastInsertId();
 

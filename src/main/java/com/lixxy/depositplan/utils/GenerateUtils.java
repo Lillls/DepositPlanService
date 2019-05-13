@@ -23,7 +23,7 @@ public class GenerateUtils {
     }
 
     public static void main(String[] args) {
-        List<Long> list = generateList(100L, 100L, 364);
+        List<Long> list = generateList(100L, 50L, 364);
         System.out.println(list);
     }
 
