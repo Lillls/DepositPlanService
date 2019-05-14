@@ -77,13 +77,13 @@ public class PlanController {
         PlanDetailBean detailBean = new PlanDetailBean();
         Integer planId = requestMap.get("planId");
         PlanBean planBean = planService.selectByPrimaryKey(planId);
-        Double savedMoney = recordService.getSavedMoney(planId);
+        Long savedMoney = recordService.getSavedMoney(planId);
 
         detailBean.setId(planId);
         detailBean.setName(planBean.getName());
         detailBean.setPassDays(DateUtils.getDistanceOfTwoDate(planBean.getCreateDate(), new Date()) + 1);
         detailBean.setTotalDays(DateUtils.getDistanceOfTwoDate(planBean.getCreateDate(), planBean.getEndDate()) + 1);
-        detailBean.setTotalMoney(planBean.getMoney() / 100.0);
+        detailBean.setTotalMoney(planBean.getMoney());
         detailBean.setSavedMoney(savedMoney);
 
         map.put("code", 100);

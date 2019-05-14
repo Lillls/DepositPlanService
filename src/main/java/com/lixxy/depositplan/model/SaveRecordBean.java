@@ -9,7 +9,7 @@ public class SaveRecordBean {
 
     private Integer userId;
 
-    private Double money;
+    private Long money;
 
     private Integer isSaved;
 
@@ -41,11 +41,11 @@ public class SaveRecordBean {
         this.userId = userId;
     }
 
-    public Double getMoney() {
+    public Long getMoney() {
         return money;
     }
 
-    public void setMoney(Double money) {
+    public void setMoney(Long money) {
         this.money = money;
     }
 

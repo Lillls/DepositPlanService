@@ -7,8 +7,8 @@ public class PlanDetailBean {
     private int passDays;
     private int totalDays;
 
-    private Double savedMoney;
-    private Double totalMoney;
+    private Long savedMoney;
+    private Long totalMoney;
 
     public int getId() {
         return id;
@@ -42,19 +42,19 @@ public class PlanDetailBean {
         this.totalDays = totalDays;
     }
 
-    public Double getSavedMoney() {
+    public Long getSavedMoney() {
         return savedMoney;
     }
 
-    public void setSavedMoney(Double savedMoney) {
+    public void setSavedMoney(Long savedMoney) {
         this.savedMoney = savedMoney;
     }
 
-    public Double getTotalMoney() {
+    public Long getTotalMoney() {
         return totalMoney;
     }
 
-    public void setTotalMoney(Double totalMoney) {
+    public void setTotalMoney(Long totalMoney) {
         this.totalMoney = totalMoney;
     }
 }

@@ -24,13 +24,13 @@ public class SavedRecordService {
         return recordMapper.selectSaveRecords(planId, isSaved);
     }
 
-    public Double getSavedMoney(int planId) {
+    public Long getSavedMoney(int planId) {
         List<SaveRecordBean> saveRecords = getSaveRecords(planId, 1);
-        Double total = 0D;
+        Long total = 0L;
         for (SaveRecordBean saveRecordBean : saveRecords) {
             total += saveRecordBean.getMoney();
         }
-        return total / 100.0;
+        return total;
     }
 
     //存钱

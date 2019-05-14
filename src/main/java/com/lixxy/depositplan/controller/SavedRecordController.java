@@ -55,7 +55,7 @@ public class SavedRecordController {
     Map getSavedMoneyByPlanId(@RequestBody Map<String, Integer> requestMap) {
         Map<String, Object> map = new HashMap<>();
         Integer planId = requestMap.get("planId");
-        Double saveRecord = recordService.getSavedMoney(planId);
+        Long saveRecord = recordService.getSavedMoney(planId);
         map.put("code", 100);
         map.put("msg", "success");
         map.put("data", saveRecord);
@@ -140,7 +140,7 @@ public class SavedRecordController {
 
             recordBean = new SaveRecordBean();
             recordBean.setPlanId(planId);
-            recordBean.setMoney(list.get(randomInt).doubleValue());
+            recordBean.setMoney(list.get(randomInt));
             recordBean.setCreateDate(date);
             int i = recordService.insertSelective(recordBean);
             Integer insertId = recordService.getLastInsertId();
@@ -149,7 +149,7 @@ public class SavedRecordController {
                 return null;
             }
         }
-        recordBean.setMoney(recordBean.getMoney() / 100);
+        recordBean.setMoney(recordBean.getMoney());
         return recordBean;
     }
 
